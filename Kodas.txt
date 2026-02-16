@@ -1,0 +1,94 @@
+const searchInput = document.getElementById("searchInput");
+const statusText = document.getElementById("status");
+const resultsDiv = document.getElementById("results");
+
+// API paprasta nuoroda į serverius kurie gražina informaciją
+const allShowsApi = "https://api.tvmaze.com/shows";
+const searchShow = "https://api.tvmaze.com/search/shows?q=";
+
+function getAllShows() {
+  statusText.textContent = "Kraunami filmai...";
+
+  fetch(allShowsApi)
+    .then((response) => response.json())
+    .then((data) => {
+      resultsDiv.innerHTML = ""; // ✅ kad nesikauptų kortelės
+      statusText.textContent = `Užkrauta ${data.length} filmų`;
+
+      data.forEach((movie) => {
+        const div = document.createElement("div");
+        div.className = "card";
+
+        const rating = movie.rating?.average ?? "Reitingo nėra";
+        const imgSrc =
+          movie.image?.medium ||
+          "https://placehold.co/210x295?text=No+Image";
+
+        div.innerHTML = `
+          <img src="${imgSrc}" alt="Nuotrauka">
+          <h3>${movie.name} <br> Reitingas: ${rating}</h3>
+        `;
+
+        resultsDiv.appendChild(div);
+      });
+    })
+    .catch((error) => {
+      console.log(error);
+      statusText.textContent = "Atsiprašome, įvyko klaida";
+    });
+}
+
+// Ant puslapio užkrovimo paleis pačią funkciją
+getAllShows();
+
+// ✅ vietoj "click" naudojam "input", kad ieškotų rašant
+
+searchInput.addEventListener("input", () => {
+  const value = searchInput.value.trim();
+
+  if (value.length >= 2) {
+    searchShowsByName(value);
+  } else {
+    getAllShows(); // ✅ kai ištrinama paieška – grąžina visus
+  }
+});
+
+function searchShowsByName(value) {
+  resultsDiv.innerHTML = "";
+  statusText.textContent = "Ieškoma...";
+
+  fetch(`${searchShow}${encodeURIComponent(value)}`) // ✅ saugus URL
+    .then((response) => response.json())
+    .then((data) => {
+      // ✅ tvmaze search grąžina [{score, show}, ...]
+      const movies = data.map((item) => item.show);
+
+      if (movies.length === 0) {
+        statusText.textContent = "Nieko nerasta.";
+        return;
+      }
+
+      movies.forEach((movie) => {
+        const div = document.createElement("div");
+        div.className = "card";
+
+        const rating = movie.rating?.average ?? "Reitingo nėra";
+        const imgSrc =
+          movie.image?.medium ||
+          "https://placehold.co/210x295?text=No+Image";
+
+        div.innerHTML = `
+          <img src="${imgSrc}" alt="Nuotrauka">
+          <h3>${movie.name} <br> Reitingas: ${rating}</h3>
+        `;
+
+        resultsDiv.appendChild(div);
+      });
+
+      statusText.textContent = `Rasta: ${movies.length} filmų`;
+    })
+    .catch((error) => {
+      console.log(error);
+      statusText.textContent = "Atsiprašome, įvyko klaida ieškant.";
+    });
+}

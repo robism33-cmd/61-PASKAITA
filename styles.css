@@ -1,0 +1,62 @@
+body {
+  font-family: Arial, sans-serif;
+  padding: 40px;
+  background: #141414;
+  color: white;
+}
+
+input {
+  padding: 10px;
+  font-size: 16px;
+  margin-bottom: 20px;
+  width: 300px;
+  border-radius: 6px;
+  border: none;
+  background: #1f1f1f;
+  color: white;
+}
+
+input::placeholder {
+  color: #aaa;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 20px;
+}
+
+.card {
+  background: #1f1f1f;
+  border-radius: 12px;
+  padding: 10px;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+}
+
+.card img {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.card h3 {
+  margin-top: 10px;
+  font-size: 16px;
+}
+
+.loading {
+  color: #00c3ff;
+  font-weight: bold;
+}
+
+.error {
+  color: #ff4c4c;
+  font-weight: bold;
+}

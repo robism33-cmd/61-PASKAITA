@@ -1,0 +1,10 @@
+let x = 123;
+let text = x.toString();
+console.log(text);
+naujas = text - 5;
+console.log(naujas);
+paskutinis = text.valueOf();
+console.log(paskutinis);
+console.log(typeof paskutinis);
+console.log(typeof parseInt(paskutinis));
+console.log(typeof parseFloat(444));
