@@ -92,7 +92,7 @@ function renderMovies(movies) {
       "https://via.placeholder.com/210x295?text=No+Image";
 
     div.innerHTML = `<img src="${imgSrc}" alt="Nuotrauka">
-        <h3>${movie.name} <br> Reitingas: ${rating}</h3>
+        <h3>${movie.name} <br> Reitingas ⭐: ${rating}</h3>
         `;
     div.addEventListener("click", () => {
       // Leidžia žmopgų nukreipti į puslapį arba vididinį puslapį

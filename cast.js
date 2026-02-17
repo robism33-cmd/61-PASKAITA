@@ -1,20 +1,18 @@
 const actorsDiv = document.getElementById("actors");
 const statusText = document.getElementById("status");
+const backLink = document.getElementById("backLink");
 
 const Api = "https://api.tvmaze.com/shows/";
 
 // Gaunu prieiga prie naršyklės dabartinės nuorodos
 const params = new URLSearchParams(window.location.search);
 const movieId = params.get("id");
-// const rating = params.get("rating");
-// const summary = params.get("summary");
-// alert(summary);
-// alert(window.location.href);
 
 // if (!movieId) {
 //   statusText.textContent = "";
 //   actorsDiv.innerHTML = "<p class='error'>Filmo ID nerastas URL'e.</p>";
 // } else {
+//   backLink.href = `details.html?id=${movieId}`;
 //   getMovieCast();
 // }
 

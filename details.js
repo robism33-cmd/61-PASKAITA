@@ -1,4 +1,6 @@
 const detailsDiv = document.getElementById("details");
+const actorsDiv = document.getElementById("actors");
+const actorsBtn = document.getElementById("actorsBtn");
 
 const api = "https://api.tvmaze.com/shows/";
 // Gaunu prieiga prie naršyklės dabartinės nuorodos
@@ -6,6 +8,11 @@ const params = new URLSearchParams(window.location.search);
 const movieId = params.get("id");
 
 function getMovieDetails() {
+  if (!movieId) {
+    detailsDiv.innerHTML = `<p class="error">Nerastas filmo Id...</p>"`;
+    return;
+    detailsDiv.innerHTML = `<p class="loading">Kraunama...</p>"`;
+  }
   fetch(`${api}${movieId}`)
     .then((response) => {
       return response.json();
@@ -17,13 +24,14 @@ function getMovieDetails() {
           ? `<img src="${data.image.original}" alt="nuotrauka">`
           : `Nuotraukos nėra`
       }
-          <p><strong>Reitingas: </strong>${
+          <p><strong>Reitingas ⭐ : </strong>${
             data.rating?.average ?? `Reitingo nėra`
           }</p>
           <p>${data.summary}</p>`;
     })
     .catch((error) => {
-      console.log("Ivyko klaida pabandykite vėliau");
+      // console.log("Ivyko klaida pabandykite vėliau");
+      detailsDiv.innerHTML = `<p class="error">Įvyko klaida kraunant filmą.</p>"`;
     });
 }
 
@@ -61,10 +69,24 @@ function getMovieCast() {
     .catch(() => {
       actorsDiv.innerHTML =
         "<p class='error'>Nepavyko gauti aktorių sąrašo.</p>";
+    })
+    .finally(() => {
+      actorsBtn.disabled = false;
+      actorsBtn.textContent = "Žiūrėti aktorius";
     });
 }
 
 getMovieDetails();
+getMovieCast();
+
+actorsBtn.addEventListener("click", () => {
+  // if (!moviedId) return;
+  // actorsBtn.disabled = true;
+  // actorsBtn.textContent = `Kraunama...`;
+  window.location.href = `cast.html?id=${movieId}`;
+  getMovieCast();
+});
+
 detailsDiv.addEventListener("click", () => {
   // Leidžia žmogų nukreipti į puslapį arba vididinį puslapį
   // window.location.href = `cast.html`;
